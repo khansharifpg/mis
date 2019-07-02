@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','studentcontroller@index')->name('home');
+Route::get('create','studentcontroller@create')->name('create');
+Route::post('create','studentcontroller@store')->name('store');
+Route::get('edit/{id}','studentcontroller@edit')->name('edit');
+Route::post('update/{id}','studentcontroller@update')->name('update');
+Route::delete('delete/{id}','studentcontroller@delete')->name('delete');

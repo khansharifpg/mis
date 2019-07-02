@@ -1,95 +1,69 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+	<div class="container">
+		@if (session('successMsg'))
+			<div class="alert alert-dismissible alert-success">
+			  <button type="button" class="close" data-dismiss="alert">×</button>
+			  <strong>Well done!</strong> {{session ('successMsg')}}
+			</div>
+		@endif
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+	</div>
+	<table class="table table-bordered table-striped table-hover ">
+	  <thead>
+	  <tr>
+	    <th>Id</th>
+		 <th>First Name</th>
+	    <th>Last Name</th>
+		<th>Email</th>
+	    <th>Phone</th>
+		<th class="text-center">Action</th>
+	  </tr>
+	  </thead>
+	  <tbody>
 
-            .full-height {
-                height: 100vh;
-            }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+	    @foreach ($students as $student)
+		<tr>
+			<td>{{$student->id }}</td>
 
-            .position-ref {
-                position: relative;
-            }
+			<td>{{$student->first_name }}</td>
+			<td>{{$student->last_name }}</td>
+			<td>{{$student->email }}</td>
+			<td>{{$student->phone }}</td>
+			<td class="text-center" ><a class="btn btn-raised btn-primary btn-sm" href="{{ route('edit',$student->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+				<form method="POST" id="delete-form-{{ $student->id }}" action="{{ route('delete',$student->id) }}" style="display-none;" >
 
-            .content {
-                text-align: center;
-            }
+					{{ csrf_field() }}
+					{{ method_field('delete') }}
 
-            .title {
-                font-size: 84px;
-            }
+				</form>
+				<button onclick="if(confirm('Are you sure?')){
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
+						event.preventDefault();
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
+						document.getElementById('delete-form-{{$student->id }}').submit();
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+
+					}else {
+						event.preventDefault();
+
+
+					}" class ="btn btn-raised btn-danger btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+
+
+			</td>
+ 		</tr>
+	    @endforeach
+
+
+
+
+	  </tbody>
+	</table>
+@endsection
