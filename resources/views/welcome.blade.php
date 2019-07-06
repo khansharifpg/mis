@@ -60,10 +60,7 @@
 			</td>
  		</tr>
 	    @endforeach
-
-
-
-
 	  </tbody>
 	</table>
+	{{$students->links()}}
 @endsection
